@@ -50,3 +50,27 @@ def load_model():
     model = joblib.load(MODEL_PATH)
     encoder = joblib.load(ENCODER_PATH)
     return model, encoder
+
+
+def train_model_for_app(csv_path="train_small.csv"):
+    path = csv_path
+    if not os.path.exists(path):
+        path = os.path.join("data", csv_path)
+
+    df = pd.read_csv(path)
+
+    df = df.dropna()
+    X = df["text"].astype(str)
+    y = df["category"].astype(str)
+
+    encoder = LabelEncoder()
+    y_encoded = encoder.fit_transform(y)
+
+    model = Pipeline([
+        ("tfidf", TfidfVectorizer(preprocessor=preprocess)),
+        ("clf", LinearSVC())
+    ])
+
+    model.fit(X, y_encoded)
+
+    return model, encoder
