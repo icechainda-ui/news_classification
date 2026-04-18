@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-from ml_core import load_model
+from ml_core import train_model
 
 st.set_page_config(
     page_title="News Analytics Dashboard",
@@ -248,7 +248,7 @@ section[data-testid="stSidebar"] * {
 model, encoder = None, None
 model_loaded = False
 try:
-    model, encoder = load_model()
+    model, encoder = train_model()
     model_loaded = True
 except Exception:
     model_loaded = False
